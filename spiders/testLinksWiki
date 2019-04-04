@@ -1,0 +1,21 @@
+from scrapy.contrib.linkextractors import LinkExtractor
+from scrapy.contrib.spiders import CrawlSpider, Rule
+
+from BetExp.items import Articlewk
+
+
+class ArticleSpider(CrawlSpider):
+    name = 'articlewk'
+    allowed_domains = ['betexplorer.com']
+    start_urls = ['https://www.betexplorer.com/soccer']
+    rules = [
+        Rule(LinkExtractor(allow='(/algeria/)((?!:).)*$'),
+             callback='parse_items', follow=True),
+    ]
+
+
+def parse_items(self, response):
+    articlewk = Articlewk()
+    articlewk['url'] = response.url
+    articlewk['test'] = 'test'
+    return articlewk
